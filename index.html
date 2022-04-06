@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="githubPro">GitHub Profile</h1>
+
+      <div class="searchText">
+        <input type="text" placeholder="Search Github User..." />
+        <button class="searchBtn">Search</button>
+      </div>
+
+      <div class="resultBody">
+        <div class="githubHead">
+          <div class="mainImg"></div>
+          <div class="githubInfo">
+            <div class="githubUser"></div>
+            <div class="repo"></div>
+            <div class="location"></div>
+          </div>
+        </div>
+
+        <div class="socialMedia">
+          <div class="profile">
+            <button class="profiles">Profile</button>
+          </div>
+
+          <div class="website">
+            <p class="websites">Website</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const searchBtn = document.querySelector(".searchBtn");
+      const input = document.querySelector("input");
+      const githubUser = document.querySelector(".githubUser");
+      const repo = document.querySelector(".repo");
+      const profile = document.querySelector(".profiles");
+      const website = document.querySelector(".websites");
+      const placeStay = document.querySelector(".location");
+      let img = document.createElement("img");
+      let block = document.querySelector(".mainImg");
+
+      searchBtn.addEventListener("click", function () {
+        const url = `https://api.github.com/users/${input.value}`;
+
+        async function getUrl() {
+          const response = await fetch(url);
+          const data = await response.json();
+
+          // console.log(data);
+          img.src = data.avatar_url;
+          block.appendChild(img);
+          block.style.border = 'none'
+
+
+          githubUser.innerHTML = data.name;
+          repo.innerHTML = data.public_repos + '' + 'are  the number of repositories';
+
+          placeStay.innerHTML = data.location === "" || data.location === null ?
+           "The user did not indicate the location" : data.location;
+
+           website.innerHTML = data.blog === "" || data.blog === null ?
+           "No website Found" : data.blog;
+
+           profile.innerHTML = data.url === "" || data.url === null ?
+           "Profile" : data.url;
+
+
+
+        }
+        getUrl();
+      });
+    </script>
+  </body>
+</html>
